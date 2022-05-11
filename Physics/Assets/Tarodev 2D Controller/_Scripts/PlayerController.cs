@@ -24,7 +24,7 @@ namespace TarodevController {
         private void FixedUpdate() {
             if(!_active) return;
             // Calculate velocity
-            Velocity = (transform.position - _lastPosition) / Time.deltaTime;
+            Velocity = (transform.position - _lastPosition) / Time.fixedDeltaTime;
             _lastPosition = transform.position;
 
             
@@ -40,7 +40,8 @@ namespace TarodevController {
 
 		private void Update()
 		{
-            GatherInput();
+            if (!_active) return;   
+            GatherInput();            
         }
 
 
@@ -136,7 +137,7 @@ namespace TarodevController {
 
             // Draw the future position. Handy for visualizing gravity
             Gizmos.color = Color.red;
-            var move = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;
+            var move = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.fixedDeltaTime;
             Gizmos.DrawWireCube(transform.position + move, _characterBounds.size);
         }
 
@@ -153,18 +154,18 @@ namespace TarodevController {
         private void CalculateWalk() {
             if (Input.X != 0) {
                 // Set horizontal move speed
-                _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
+                _currentHorizontalSpeed += Input.X * _acceleration * Time.fixedDeltaTime;
 
                 // clamped by max frame movement
                 _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
 
                 // Apply bonus at the apex of a jump
                 var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
-                _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+                _currentHorizontalSpeed += apexBonus * Time.fixedDeltaTime;
             }
             else {
                 // No input. Let's slow the character down
-                _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
+                _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.fixedDeltaTime);
             }
 
             if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft) {
@@ -192,7 +193,7 @@ namespace TarodevController {
                 var fallSpeed = _endedJumpEarly && _currentVerticalSpeed > 0 ? _fallSpeed * _jumpEndEarlyGravityModifier : _fallSpeed;
 
                 // Fall
-                _currentVerticalSpeed -= fallSpeed * Time.deltaTime;
+                _currentVerticalSpeed -= fallSpeed * Time.fixedDeltaTime;
 
                 // Clamp
                 if (_currentVerticalSpeed < _fallClamp) _currentVerticalSpeed = _fallClamp;
@@ -255,13 +256,13 @@ namespace TarodevController {
         #region Move
 
         [Header("MOVE")] [SerializeField, Tooltip("Raising this value increases collision accuracy at the cost of performance.")]
-        private int _freeColliderIterations = 10;
+        private int _freeColliderIterations = 13;
 
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter() {
             var pos = transform.position;
             RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
-            var move = RawMovement * Time.deltaTime;
+            var move = RawMovement * Time.fixedDeltaTime;
             var furthestPoint = pos + move;
 
             // check furthest movement. If nothing hit, move and don't do extra checks
