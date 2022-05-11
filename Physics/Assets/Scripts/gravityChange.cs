@@ -9,7 +9,7 @@ public class gravityChange : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.O) && cameraRotation.CanSwitchGravity)
 		{
-			transform.eulerAngles = Vector3.forward * 90f;
+			transform.eulerAngles += Vector3.forward * 90f;
 
 			var t = _controller.transform.position;
 			_controller.transform.position = new Vector3(-t.y, t.x, 0f);
@@ -17,7 +17,7 @@ public class gravityChange : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.P) && cameraRotation.CanSwitchGravity)
 		{
-			transform.eulerAngles = Vector3.back * 90f;
+			transform.eulerAngles += Vector3.back * 90f;
 
 			var t = _controller.transform.position;
 			_controller.transform.position = new Vector3(t.y, -t.x, 0f);

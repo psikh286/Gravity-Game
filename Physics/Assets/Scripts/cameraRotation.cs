@@ -16,23 +16,21 @@ public class cameraRotation : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.O) && CanSwitchGravity)
 		{
-			CanSwitchGravity = false;
-			_lastRotation = transform.eulerAngles;
-			transform.eulerAngles = Vector3.forward * 90f;
-			StartCoroutine(ReturnCamera());
+			StartCoroutine(ReturnCamera(90));
 		}
 
 		if (Input.GetKeyDown(KeyCode.P) && CanSwitchGravity)
-		{
-			CanSwitchGravity = false;
-			_lastRotation = transform.eulerAngles;
-			transform.eulerAngles = Vector3.back * 90f;
-			StartCoroutine(ReturnCamera());
+		{			
+			StartCoroutine(ReturnCamera(-90));
 		}	
 	}
 
-	private IEnumerator ReturnCamera()
+	private IEnumerator ReturnCamera(int direction)
 	{
+		CanSwitchGravity = false;
+		_lastRotation = transform.eulerAngles;
+		transform.eulerAngles = Vector3.forward * direction;
+
 		yield return new WaitUntil(() => _controller.Grounded);
 		_current = 0;
 		_desiredRotation = _lastRotation;
