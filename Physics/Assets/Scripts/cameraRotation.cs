@@ -1,10 +1,12 @@
 using System.Collections;
+using System;
 using TarodevController;
 using UnityEngine;
 
 public class cameraRotation : MonoBehaviour
 {
 	public static bool CanSwitchGravity = true;
+	public Action<int> GravitySwitched;
 
 	[SerializeField] private PlayerController _controller;
 	[SerializeField] private float _speed;
@@ -16,11 +18,13 @@ public class cameraRotation : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.O) && CanSwitchGravity)
 		{
+			GravitySwitched?.Invoke(90);
 			StartCoroutine(ReturnCamera(90));
 		}
 
 		if (Input.GetKeyDown(KeyCode.P) && CanSwitchGravity)
-		{			
+		{
+			GravitySwitched?.Invoke(-90);
 			StartCoroutine(ReturnCamera(-90));
 		}	
 	}
