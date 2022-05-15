@@ -8,9 +8,9 @@ public class cameraRotation : MonoBehaviour
 	public static bool CanSwitchGravity = true;
 	public Action<int> GravitySwitched;
 
-	[SerializeField] private PlayerController _controller;
 	[SerializeField] private float _speed;
 	[SerializeField] private AnimationCurve _curve;
+	[SerializeField] private PlayerController _controller;
 	private Vector3 _lastRotation = Vector3.zero;
 	private float _current;
 	private bool _canSwitchGravity = true;
@@ -23,19 +23,20 @@ public class cameraRotation : MonoBehaviour
 	private void Awake()
 	{
 		_target = _controller.transform;
+		
 	}
 
 	private void Update()
 	{
-		if (CanSwitchGravity && _canSwitchGravity)
+		if (CanSwitchGravity)
 		{			
-			if (Input.GetKeyDown(KeyCode.O))
+			if (Input.GetKeyDown(KeyCode.O) && _canSwitchGravity)
 			{
 				GravitySwitched?.Invoke(90);
 				StartCoroutine(ReturnCamera(90));
 			}
 
-			if (Input.GetKeyDown(KeyCode.P))
+			if (Input.GetKeyDown(KeyCode.P) && _canSwitchGravity)
 			{
 				GravitySwitched?.Invoke(-90);
 				StartCoroutine(ReturnCamera(-90));
