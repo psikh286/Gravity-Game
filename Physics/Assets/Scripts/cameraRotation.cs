@@ -23,7 +23,7 @@ public class cameraRotation : MonoBehaviour
 	private void Awake()
 	{
 		_target = _controller.transform;
-		
+		CanSwitchGravity = true;
 	}
 
 	private void Update()
