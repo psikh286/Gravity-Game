@@ -29,7 +29,7 @@ public class cameraRotation : MonoBehaviour
 	private void Update()
 	{
 		if (CanSwitchGravity)
-		{			
+		{
 			if (Input.GetKeyDown(KeyCode.O) && _canSwitchGravity)
 			{
 				GravitySwitched?.Invoke(90);
