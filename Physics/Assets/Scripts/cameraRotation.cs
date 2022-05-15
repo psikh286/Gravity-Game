@@ -18,7 +18,12 @@ public class cameraRotation : MonoBehaviour
 	[Space]
 	[Header("FOLLOW")]
 	[SerializeField] private Vector3 _offset;
-	[SerializeField] private Transform _target;
+	private Transform _target;
+
+	private void Awake()
+	{
+		_target = _controller.transform;
+	}
 
 	private void Update()
 	{
