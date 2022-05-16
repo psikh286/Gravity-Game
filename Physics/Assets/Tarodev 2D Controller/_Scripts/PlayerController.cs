@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -294,5 +295,55 @@ namespace TarodevController {
         }
 
         #endregion
+
+        private bool effected = false;
+        public void ChangeVars(string _name, float _index)
+		{
+            StartCoroutine(Effectssss(_name, _index));           
+
+            IEnumerator Effectssss(string name, float index)
+			{
+                if (effected) yield break;
+                switch (name)
+                {
+                    case "jump":
+                        _jumpHeight += index;
+                        break;
+
+                    case "speed":
+                        _moveClamp += index;
+                        break;
+
+                    case "gravity":
+                        _fallClamp += index;
+                        break;
+
+                    case "fly":
+                        _apexBonus += index;
+                        break;
+                }
+                effected = true;
+                yield return new WaitForSeconds(5f);
+                switch (name)
+                {
+                    case "jump":
+                        _jumpHeight -= index;
+                        break;
+
+                    case "speed":
+                        _moveClamp -= index;
+                        break;
+
+                    case "gravity":
+                        _fallClamp -= index;
+                        break;
+
+                    case "fly":
+                        _apexBonus -= index;
+                        break;
+                }
+                effected = false;
+            }
+		}
     }
 }
