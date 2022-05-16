@@ -21,5 +21,10 @@ public class reloadScene : MonoBehaviour
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			cameraRotation.CanSwitchGravity = true;
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			SceneManager.LoadScene(0);
+		}
 	}
 }
